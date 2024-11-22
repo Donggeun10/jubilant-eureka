@@ -1,0 +1,27 @@
+logging:
+    level:
+        root: info
+        com.example.chatter: debug
+
+spring:
+    application:
+        name: chat-backend-local
+
+
+camel:
+    component:
+        hazelcast-topic:
+            hazelcast-mode: client
+    cluster:
+        file:
+            enabled: true
+            id: ${random.uuid}
+            root: ./clustered
+        controller:
+            enabled: true
+            namespace: lock2
+            routes[heartbeat]:
+                clustered: false
+    main:
+        dev-console-enabled: true
+        name: camel-chat-backend-local

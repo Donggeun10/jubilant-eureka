@@ -1,0 +1,30 @@
+logging:
+    level:
+        root: info
+        com.example.chatter: debug
+
+spring:
+    application:
+        name: chat-backend-stg
+
+
+camel:
+    cluster:
+        kubernetes:
+            enabled: true
+            id: ${random.uuid}
+            master-url: https://127.0.0.1
+            lease-duration-millis: 120000
+            renew-deadline-millis: 80000
+            retry-period-millis: 10000
+            kubernetes-namespace: default
+            cluster-labels:
+                app: chat-backend
+        controller:
+            enabled: true
+            namespace: lock2
+            routes[heartbeat]:
+                clustered: false
+    main:
+        dev-console-enabled: true
+        name: camel-chat-backend-stg

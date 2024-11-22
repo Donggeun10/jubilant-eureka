@@ -1,0 +1,32 @@
+name: chatter-backend
+services:
+    webapp-1:
+        image: chat-ws:local
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        ports:
+            - "9090:8080"
+        #command: "--port 9083"
+#        environment:
+#            - SPRING_PROFILES_ACTIVE=local
+        cpus: 0.5
+        mem_limit: 1024m
+    webapp-2:
+        image: chat-ws:local
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        ports:
+            - "9091:8080"
+        cpus: 0.5
+        mem_limit: 1024m
+    webapp-3:
+        image: chat-ws:local
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        ports:
+            - "9092:8080"
+        cpus: 0.5
+        mem_limit: 1024m
