@@ -17,7 +17,7 @@ public class StompController {
     final ChatMessagePubService chatMessagePubService;
 
     @MessageMapping("/chat/{chatRoomId}")
-    public void message(@DestinationVariable Long chatRoomId, @Payload ChatMessage request) {
+    public void message(@DestinationVariable String chatRoomId, @Payload ChatMessage request) {
 
         log.info("chatRoomId: {}, message: {}, ChatMessageRequest: {}", chatRoomId, request.getMessage(), request);
         chatMessagePubService.publishMessage(request);

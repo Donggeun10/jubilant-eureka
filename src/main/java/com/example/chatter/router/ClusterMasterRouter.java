@@ -1,6 +1,8 @@
 package com.example.chatter.router;
 
+import com.example.chatter.component.DataConverter;
 import com.example.chatter.stragtegy.ChatMessageAggregator;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.hazelcast.HazelcastConstants;
@@ -8,9 +10,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class ClusterMasterRouter extends RouteBuilder {
 
+    final DataConverter dataConverter;
 
     @Value("${app.completionInterval.masterRouter:10000}")
     private long completionInterval;
@@ -25,13 +29,23 @@ public class ClusterMasterRouter extends RouteBuilder {
             .routeId("clustered")
             .log("Clustered route (timer) ...");
 
-        fromF("master:{{camel.cluster.controller.namespace}}:hazelcast-%schat-topic?hazelcastInstance=#hazelcastLocalInstance", HazelcastConstants.TOPIC_PREFIX)
-            .routeId("chatSubscription")
+        fromF("master:{{camel.cluster.controller.namespace}}:hazelcast-%schat-talk-topic?hazelcastInstance=#hazelcastLocalInstance", HazelcastConstants.TOPIC_PREFIX)
+            .routeId("chatTalkSubscription")
             .log("...message received ${body}")
             .aggregate(new ChatMessageAggregator()).constant(true)
             // wait for 10 seconds to aggregate, input unit is millisecond
             .completionInterval(completionInterval)
             .to("jpa:com.example.chatter.entity.ChatMessage?entityType=java.util.List");
+
+        fromF("master:{{camel.cluster.controller.namespace}}:hazelcast-%schat-enter-topic?hazelcastInstance=#hazelcastLocalInstance", HazelcastConstants.TOPIC_PREFIX)
+            .routeId("chatEnterSubscription")
+            .log("...message received ${body}")
+            .aggregate(new ChatMessageAggregator()).constant(true)
+            // wait for 10 seconds to aggregate, input unit is millisecond
+            .completionInterval(completionInterval)
+            .bean(dataConverter, "convertMessageToRoomMember")
+            .to("jpa:com.example.chatter.entity.ChatRoomMember?entityType=java.util.List");
+
 
     }
 }

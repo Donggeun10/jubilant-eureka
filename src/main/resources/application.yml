@@ -4,3 +4,8 @@ spring:
 
 server:
     shutdown: graceful
+
+app:
+    topic:
+        talk: chat-talk-topic
+        enter: chat-enter-topic

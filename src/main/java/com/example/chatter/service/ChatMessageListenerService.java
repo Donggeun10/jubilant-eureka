@@ -9,6 +9,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,14 @@ public class ChatMessageListenerService implements MessageListener<ChatMessage> 
     private final HazelcastInstance hazelcastInstance;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
+    @Value("${app.topic.talk:chat-talk-topic}")
+    private String talkTopic;
+
     ITopic<ChatMessage> chatTopic;
 
     @PostConstruct
     private void init() {
-        chatTopic = hazelcastInstance.getTopic("chat-topic");
+        chatTopic = hazelcastInstance.getTopic(talkTopic);
         chatTopic.addMessageListener(this);
 
     }
@@ -34,7 +38,7 @@ public class ChatMessageListenerService implements MessageListener<ChatMessage> 
     public void onMessage(Message<ChatMessage> message) {
         log.info("Received: " + message.getMessageObject());
         ChatMessage chatMessage = message.getMessageObject();
-        long chatRoomId = chatMessage.getChatRoomId();
+        String chatRoomId = chatMessage.getChatRoomId();
         simpMessagingTemplate.convertAndSend("/sub/chat/" + chatRoomId, chatMessage);
     }
 

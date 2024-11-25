@@ -7,6 +7,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -17,17 +18,34 @@ public class ChatMessagePubService {
     @Qualifier("hazelcastLocalInstance")
     private final HazelcastInstance hazelcastInstance;
 
-    ITopic<ChatMessage> chatTopic;
+    @Value("${app.topic.talk:chat-talk-topic}")
+    private String talkTopic;
+
+    @Value("${app.topic.enter:chat-enter-topic}")
+    private String enterTopic;
+
+    ITopic<ChatMessage> chatTalkTopic;
+    ITopic<ChatMessage> chatEnterTopic;
 
     @PostConstruct
     private void init() {
-        chatTopic = hazelcastInstance.getTopic("chat-topic");
+        chatTalkTopic = hazelcastInstance.getTopic(talkTopic);
+        chatEnterTopic = hazelcastInstance.getTopic(enterTopic);
     }
 
     // [1] 메시지를 동기로 Publish한다.
     public void publishMessage(ChatMessage message) {
         log.debug("Publishing message: {}", message);
-        chatTopic.publish(message);
+        switch(message.getType()){
+            case TALK:
+                chatTalkTopic.publish(message);
+                break;
+            case ENTER, EXIT:
+                chatEnterTopic.publish(message);
+                break;
+            default:
+                break;
+        }
     }
 
 }

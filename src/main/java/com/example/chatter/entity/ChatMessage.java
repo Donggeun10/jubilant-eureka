@@ -1,5 +1,6 @@
 package com.example.chatter.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import java.io.Serializable;
@@ -23,8 +24,10 @@ public class ChatMessage implements Serializable {
     }
     MessageType type;
 
-    Long chatRoomId;
+    String chatRoomId;
     String sender;
+
+    @Column(length = 1000)
     String message;
 
     @Id
