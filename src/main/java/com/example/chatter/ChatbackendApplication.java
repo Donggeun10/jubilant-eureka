@@ -12,6 +12,7 @@ public class ChatbackendApplication {
      * https://jiangxy.github.io/websocket-debug-tool/
      * https://medium.com/microservices-architecture/hazelcast-messaging-273451ec110a
      * https://refactorfirst.com/spring-boot-websockets-stomp-notifications
+     * https://dev-coco.tistory.com/133
      * */
     public static void main(String[] args) {
         SpringApplication.run(ChatbackendApplication.class, args);

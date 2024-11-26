@@ -1,18 +1,22 @@
 package com.example.chatter.entity;
 
 import com.example.chatter.exception.ChatRoomFullException;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.ToString.Exclude;
 import org.hibernate.annotations.CreationTimestamp;
@@ -23,7 +27,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class ChatRoom implements Serializable {
 
     @Id
@@ -59,13 +62,11 @@ public class ChatRoom implements Serializable {
         this.memberCount--;
     }
 
-    @OneToMany
-    @Exclude
-    private List<ChatRoomMember> chatRoomMembers;
+    @Setter
+    @OneToMany(mappedBy = "chatRoom", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<ChatRoomMember> chatRoomMembers = new ArrayList<>();
 
-    public void setChatRoomMembers(List<ChatRoomMember> chatRoomMembers) {
-        this.chatRoomMembers = chatRoomMembers;
-    }
+
 
 
 }
