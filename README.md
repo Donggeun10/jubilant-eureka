@@ -43,6 +43,17 @@
 ## 2. Test URL
 - Api Spec : http://localhost:8080/swagger-ui.html
 - Websocket debug tool : https://jiangxy.github.io/websocket-debug-tool/
+```
+test sample 
+ ws://localhost:8080/ws-stomp
+ /sub/chat/8f4cf2cd-15a2-42b0-8c01-47129de32a0f
+ /pub/chat/8f4cf2cd-15a2-42b0-8c01-47129de32a0f
+
+ {"type" : "TALK", "chatRoomId" : "8f4cf2cd-15a2-42b0-8c01-47129de32a0f", "sender" : "apple", "message" : "hello"}
+ {"type" : "ENTER", "chatRoomId" : "8f4cf2cd-15a2-42b0-8c01-47129de32a0f", "sender" : "apple", "message" : "hello everyone"}
+ {"type" : "EXIT", "chatRoomId" : "8f4cf2cd-15a2-42b0-8c01-47129de32a0f", "sender" : "apple"}
+
+```
 
 ## 3. Endpoints
 - POST /api/v1/chat/room

@@ -1,38 +1,25 @@
 name: chatter-backend
 services:
-    webapp-1:
+    webapp:
         image: chat-ws:local
         build:
             context: ./
             dockerfile: Dockerfile
-        ports:
-            - "9090:8080"
-        #command: "--port 9083"
-#        environment:
-#            - SPRING_PROFILES_ACTIVE=local
-        cpus: 0.5
-        mem_limit: 1024m
+        deploy:
+            mode: replicated
+            replicas: 3
+            resources:
+                reservations:
+                    cpus: '0.50'
+                    memory: 1024M
+                limits:
+                    cpus: '0.50'
+                    memory: 1024M
         volumes:
-            - d:\shared_data:/home/appuser/clustered
-    webapp-2:
-        image: chat-ws:local
-        build:
-            context: ./
-            dockerfile: Dockerfile
+            - ./clustered:/home/appuser/clustered
+    nginx:
+        image: nginx:1.27-alpine
         ports:
-            - "9091:8080"
-        cpus: 0.5
-        mem_limit: 1024m
+            - "9090:80"
         volumes:
-            - d:\shared_data:/home/appuser/clustered
-    webapp-3:
-        image: chat-ws:local
-        build:
-            context: ./
-            dockerfile: Dockerfile
-        ports:
-            - "9092:8080"
-        cpus: 0.5
-        mem_limit: 1024m
-        volumes:
-            - d:\shared_data:/home/appuser/clustered
+            - ./nginx.conf:/etc/nginx/nginx.conf
