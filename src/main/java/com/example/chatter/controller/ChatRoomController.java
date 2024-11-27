@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/chat")
 public class ChatRoomController {
 
-    final ChatRoomService chatRoomService;
-    final DataManipulator dataManipulator;
+    private final ChatRoomService chatRoomService;
+    private final DataManipulator dataManipulator;
 
     @Operation(summary = "채팅방 생성", responses = {
         @ApiResponse( responseCode = "201", description = "채팅방 등록 성공" )

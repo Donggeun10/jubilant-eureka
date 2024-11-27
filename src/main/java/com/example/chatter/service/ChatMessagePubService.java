@@ -24,8 +24,8 @@ public class ChatMessagePubService {
     @Value("${app.topic.enter:chat-enter-topic}")
     private String enterTopic;
 
-    ITopic<ChatMessage> chatTalkTopic;
-    ITopic<ChatMessage> chatEnterTopic;
+    private ITopic<ChatMessage> chatTalkTopic;
+    private ITopic<ChatMessage> chatEnterTopic;
 
     @PostConstruct
     private void init() {

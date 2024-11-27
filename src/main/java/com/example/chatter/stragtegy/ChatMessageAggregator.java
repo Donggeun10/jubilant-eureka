@@ -23,7 +23,7 @@ public class ChatMessageAggregator implements AggregationStrategy {
             log.debug("newBody={}", data);
             return newExchange;
         }else{
-            List oldBody = oldExchange.getIn().getBody(List.class);
+            var oldBody = oldExchange.getIn().getBody(List.class);
             oldList.addAll(oldBody);
             log.debug("oldBody.size={}", oldList.size());
             oldExchange.getIn().setBody(oldList);

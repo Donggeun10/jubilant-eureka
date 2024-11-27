@@ -17,23 +17,20 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ChatMessage implements Serializable {
+public class ChatMessage implements Serializable { // it will be considered composed primary key timestamp + chatRoomId
 
     public enum MessageType {
-        ENTER, TALK, EXIT, MATCH, MATCH_REQUEST;
+        ENTER, TALK, EXIT;
     }
-    MessageType type;
+    private MessageType type;
 
-    String chatRoomId;
-    String sender;
+    private String chatRoomId;
+    private String sender;
 
     @Column(length = 1000)
-    String message;
+    private String message;
 
     @Id
-    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-
-
-
+    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
 }

@@ -30,7 +30,7 @@ public class ChatRoomMember implements Serializable {
     public enum MemberStatusType {
         ACTIVE, INACTIVE;
     }
-    MemberStatusType statusType;
+    private MemberStatusType statusType;
 
     @Column(updatable = false)
     @CreationTimestamp
@@ -43,6 +43,10 @@ public class ChatRoomMember implements Serializable {
     @MapsId("broomId")
     @JoinColumn(name = "room_id")
     private ChatRoom chatRoom;
+
+    public void updateStatusType(MemberStatusType statusType) {
+        this.statusType = statusType;
+    }
 
     @Getter
     @Embeddable

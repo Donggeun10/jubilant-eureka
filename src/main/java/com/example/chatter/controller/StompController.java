@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 @Slf4j
 public class StompController {
 
-    final ChatMessagePubService chatMessagePubService;
+    private final ChatMessagePubService chatMessagePubService;
 
     @MessageMapping("/chat/{chatRoomId}")
     public void message(@DestinationVariable String chatRoomId, @Payload ChatMessage request) {

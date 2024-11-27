@@ -30,7 +30,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class ChatRoom implements Serializable {
 
     @Id
-    @Column(name = "room_id")
+    @Column(name = "room_id", length = 36)
     private String roomId;
     private String name;
 

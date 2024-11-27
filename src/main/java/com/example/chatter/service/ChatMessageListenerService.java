@@ -25,7 +25,7 @@ public class ChatMessageListenerService implements MessageListener<ChatMessage> 
     @Value("${app.topic.talk:chat-talk-topic}")
     private String talkTopic;
 
-    ITopic<ChatMessage> chatTopic;
+    private ITopic<ChatMessage> chatTopic;
 
     @PostConstruct
     private void init() {

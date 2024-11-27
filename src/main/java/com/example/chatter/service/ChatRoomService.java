@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChatRoomService {
 
-    final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomRepository chatRoomRepository;
     private final ChatRoomMemberRepository chatRoomMemberRepository;
 
     public ChatRoom createRoom(String name, List<String> memberIds) {
@@ -39,14 +39,22 @@ public class ChatRoomService {
         return chatRoomRepository.findById(chatRoom.getRoomId()).orElseThrow();
     }
 
-    @Transactional
     public void joinRoom(String roomId, String memberId) {
         ChatRoom chatRoom = findRoomById(roomId);
         chatRoom.incrementMemberCount();
-        ChatRoomMember chatRoomMember = ChatRoomMember.builder().chatRoom(chatRoom).pk(ChatRoomMemberPk.builder().amemberId(memberId).broomId(chatRoom.getRoomId()).build()).statusType(MemberStatusType.ACTIVE).build();
+        if(chatRoom.getChatRoomMembers().stream().anyMatch(member -> member.getPk().getAmemberId().equals(memberId))) {
+            for(ChatRoomMember member : chatRoom.getChatRoomMembers()) {
+                if(member.getPk().getAmemberId().equals(memberId)) {
+                    member.updateStatusType(MemberStatusType.ACTIVE);
+                    break;
+                }
+            }
+        }else{
+            ChatRoomMember chatRoomMember = ChatRoomMember.builder().chatRoom(chatRoom).pk(ChatRoomMemberPk.builder().amemberId(memberId).broomId(chatRoom.getRoomId()).build()).statusType(MemberStatusType.ACTIVE).build();
+            chatRoom.getChatRoomMembers().add(chatRoomMember);
+        }
 
         chatRoomRepository.save(chatRoom);
-        chatRoomMemberRepository.save(chatRoomMember);
     }
 
     @Transactional

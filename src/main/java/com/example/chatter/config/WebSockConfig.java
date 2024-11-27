@@ -29,7 +29,7 @@ public class WebSockConfig implements WebSocketMessageBrokerConfigurer {
         // /pub로 시작되는 메시지가 message-handling methods로 라우팅 되어야 한다.
         registry.setApplicationDestinationPrefixes("/pub");
         // /sub, /topic, /queue 로 시작되는 메시지가 메시지 브로커로 라우팅 되어야 한다.
-        registry.enableSimpleBroker("/sub", "/topic", "/queue");
+        registry.enableSimpleBroker("/sub");
     }
 
     @Override

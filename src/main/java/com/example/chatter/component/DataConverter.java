@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DataConverter {
 
-    final ChatRoomService chatRoomService;
+    private final ChatRoomService chatRoomService;
 
     public List<ChatRoomMember> convertMessageToRoomMember(List<ChatMessage> chatMessages)  {
 
