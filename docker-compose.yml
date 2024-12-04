@@ -1,10 +1,12 @@
 name: chatter-backend
 services:
     webapp:
-        image: chat-ws:local
+        image: chat-ws-api:local
         build:
             context: ./
             dockerfile: Dockerfile
+        environment:
+            - SPRING_PROFILES_ACTIVE=localDocker
         deploy:
             mode: replicated
             replicas: 3
@@ -23,3 +25,23 @@ services:
             - "9090:80"
         volumes:
             - ./nginx.conf:/etc/nginx/nginx.conf
+    docker-mysql:
+        image: mysql:8.4-oraclelinux9
+        restart: always
+        ports:
+            - 33060:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: donotuseinproduction
+            TZ: Asia/Seoul
+        deploy:
+            resources:
+                reservations:
+                    cpus: '0.50'
+                    memory: 1024M
+                limits:
+                    cpus: '0.50'
+                    memory: 1024M
+        volumes:
+            - ./db/mysql/data:/var/lib/mysql
+            - ./db/mysql/init:/docker-entrypoint-initdb.d
+            - ./db/mysql/mysql-init-files/:/docker-entrypoint-initdb.d

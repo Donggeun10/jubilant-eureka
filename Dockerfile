@@ -8,8 +8,8 @@ RUN mvn -B dependency:resolve
 
 # 2) source 복사 & package
 COPY src/ /build/src/
-RUN mvn package -DskipTests
-RUN java -Djarmode=tools -jar target/chatbackend.jar extract --destination application
+RUN mvn package -DskipTests &&  \
+    java -Djarmode=tools -jar target/chatbackend.jar extract --destination application
 
 FROM eclipse-temurin:21-jre-alpine
 

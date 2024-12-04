@@ -18,6 +18,7 @@ public class ChatbackendApplication {
      * https://medium.com/microservices-architecture/hazelcast-messaging-273451ec110a
      * https://refactorfirst.com/spring-boot-websockets-stomp-notifications
      * https://dev-coco.tistory.com/133
+     * https://velog.io/@hyunho058/Mysql-%EB%B6%84%EC%82%B0%EC%B2%98%EB%A6%ACReplication-with-docker
      * */
     public static void main(String[] args) {
         SpringApplication.run(ChatbackendApplication.class, args);

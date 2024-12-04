@@ -1,0 +1,41 @@
+logging:
+    level:
+        root: info
+        com.example.chatter: debug
+
+spring:
+    application:
+        name: chat-backend-docker
+    datasource:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://docker-mysql:3306/app_01
+        username: appuser
+        password: pleasedontchange
+        hikari:
+            pool-name: homework-pool
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: none
+    threads:
+        virtual:
+            enabled: true
+
+
+camel:
+    component:
+        hazelcast-topic:
+            hazelcast-mode: client
+    cluster:
+        file:
+            enabled: true
+            id: ${random.uuid}
+            root: ./clustered
+        controller:
+            enabled: true
+            namespace: lock2
+            routes[heartbeat]:
+                clustered: false
+    main:
+        dev-console-enabled: true
+        name: camel-chat-backend-docker
